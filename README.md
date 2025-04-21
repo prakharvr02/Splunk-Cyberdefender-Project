@@ -2,29 +2,30 @@
 
 ![](https://github.com/prakharvr02/Splunk-Cyberdefender-Project/blob/main/BOTSv3%20Splunk%20lab%20Images/1.webp)
 
-Scenario 1 (APT):
+# Scenario 1 (APT):
 
 The focus of this hands on lab will be an APT scenario and a ransomware scenario. You assume the persona of Alice Bluebird, the soc analyst who has recently been hired to protect and defend Wayne Enterprises against various forms of cyberattack.
 
 In this scenario, reports of the below graphic come in from your user community when they visit the Wayne Enterprises website, and some of the reports reference “P01s0n1vy.” In case you are unaware, P01s0n1vy is an APT group that has targeted Wayne Enterprises. Your goal, as Alice, is to investigate the defacement, with an eye towards reconstructing the attack via the Lockheed Martin Kill Chain.
 
-Scenario 2 (Ransomeware):
+# Scenario 2 (Ransomeware):
 
 In the second scenario, one of your users is greeted by this image on a Windows desktop that is claiming that files on the system have been encrypted and payment must be made to get the files back. It appears that a machine has been infected with Cerber ransomware at Wayne Enterprises and your goal is to investigate the ransomware with an eye towards reconstructing the attack.
 
 [![](https://github.com/prakharvr02/Splunk-Cyberdefender-Project/blob/main/BOTSv3%20Splunk%20lab%20Images/2.webp)]
 
 
-Link for the lab is here:https://cyberdefenders.org/blueteam-ctf-challenges/15#nav-questions
+Link for the lab is here:`https://cyberdefenders.org/blueteam-ctf-challenges/15#nav-questions`
 
 Note: I haven’t used splunk extensively before, aside from BTL1. I was completing THM’s room on splunk while doing this lab, and it helped me navigate this lab. I would suggest anybody new to splunk to check out THM’s room, which I referenced at the end of this write up. I also did some changes on how I approached the lab while writing this write up.
-Q1 This is a simple question to get you familiar with submitting answers. What is the name of the company that makes the software that you are using for this competition? Just a six-letter word with no punctuation.
 
-Ans: Splunk
+## Q1 This is a simple question to get you familiar with submitting answers. What is the name of the company that makes the software that you are using for this competition? Just a six-letter word with no punctuation.
 
-Q2 What is the likely IP address of someone from the Po1s0n1vy group scanning imreallynotbatman.com for web application vulnerabilities?
+### Ans: Splunk
 
-Ans: 40.80.148.42
+## Q2 What is the likely IP address of someone from the Po1s0n1vy group scanning imreallynotbatman.com for web application vulnerabilities?
+
+### Ans: 40.80.148.42
 
 We will look at the number of events by “src_ip” that are communicating with “imreallynotbatman.com”.
 
@@ -47,9 +48,9 @@ In reference to the result of the command above and the command below, we can al
 
 [![](https://github.com/prakharvr02/Splunk-Cyberdefender-Project/blob/main/BOTSv3%20Splunk%20lab%20Images/4.webp)]
 
-Q3 What company created the web vulnerability scanner used by Po1s0n1vy? Type the company name. (For example, “Microsoft” or “Oracle”)
+## Q3 What company created the web vulnerability scanner used by Po1s0n1vy? Type the company name. (For example, “Microsoft” or “Oracle”)
 
-Ans: acunetix
+### Ans: acunetix
 
 We will again use “suricata” as our source type and search for the keywords, “imreallynotbatman.com” and “scan”.
 
@@ -69,9 +70,9 @@ index=botsv1 sourcetype=stream:http dest_ip="192.168.250.70" src_ip="40.80.148.4
 
 [![](https://github.com/prakharvr02/Splunk-Cyberdefender-Project/blob/main/BOTSv3%20Splunk%20lab%20Images/6.webp)]
 
-Q4 What content management system is imreallynotbatman.com likely using? (Please do not include punctuation such as . , ! ? in your answer. We are looking for alpha characters only.)
+## Q4 What content management system is imreallynotbatman.com likely using? (Please do not include punctuation such as . , ! ? in your answer. We are looking for alpha characters only.)
 
-Ans: joomla
+### Ans: joomla
 
 If you have come accross CMS’s, you might be familiar with the CMS the website is using.
 
@@ -92,14 +93,14 @@ index=botsv1 sourcetype=stream:http imreallynotbatman.com
 
 The official website of Joomla says, “Joomla! is a free and open-source content management system (CMS) for publishing web content”
 
-What is a Content Management System?
+#### What is a Content Management System?
 
 “The definition of a CMS is an application (web-based), that provides capabilities for multiple users with different permission levels to manage (all or a section of) content, data or information of a website project, or intranet application.”
 “Managing content refers to creating, editing, archiving, publishing, collaborating on, reporting, distributing website content, data and information.”
 
-Q5 What is the name of the file that defaced the imreallynotbatman.com website? Please submit only the name of the file with the extension (For example, “notepad.exe” or “favicon.ico”).
+## Q5 What is the name of the file that defaced the imreallynotbatman.com website? Please submit only the name of the file with the extension (For example, “notepad.exe” or “favicon.ico”).
 
-Ans: poisonivy-is-coming-for-you-batman.jpeg
+### Ans: poisonivy-is-coming-for-you-batman.jpeg
 
 We are looking for a malicious file that was downloaded and most likely through “http”. With “stream:http” as our source type and the victim’s IP as the source IP, we identified a suspicious looking file name in the “src_headers” field.
 
@@ -137,15 +138,15 @@ index=botsv1 sourcetype=suricata "http.http_method"=GET NOT (src_ip="192.168.250
 
 [![](https://github.com/prakharvr02/Splunk-Cyberdefender-Project/blob/main/BOTSv3%20Splunk%20lab%20Images/14.webp)]
 
-Q6 This attack used dynamic DNS to resolve to the malicious IP. What is the fully qualified domain name (FQDN) associated with this attack?
+## Q6 This attack used dynamic DNS to resolve to the malicious IP. What is the fully qualified domain name (FQDN) associated with this attack?
 
-Ans: prankglassinebracket.jumpingcrab.com
+### Ans: prankglassinebracket.jumpingcrab.com
 
 We found the answer on Q5.
 
-Q7 What IP address has Po1s0n1vy tied to domains that are pre-staged to attack Wayne Enterprises?
+## Q7 What IP address has Po1s0n1vy tied to domains that are pre-staged to attack Wayne Enterprises?
 
-Ans: 23.22.63.114
+### Ans: 23.22.63.114
 
 We identified two IP address that are malicious, “40.80.148.42” and “23.22.63.114”. So far, we know that “40.80.148.12” conducted a web vulnerability scanning, and “23.22.63.114” hosted the file that defaced the victim’s website.
 
@@ -156,9 +157,9 @@ Let’s investigate the two IP addresses in VirusTotal to see if any of them are
 
 We can safely say the “23.22.63.114” is tied to “Po1s0n1vy”.
 
-Q8 Based on the data gathered from this attack and common open-source intelligence sources for domain names, what is the email address most likely associated with the Po1s0n1vy APT group?
+## Q8 Based on the data gathered from this attack and common open-source intelligence sources for domain names, what is the email address most likely associated with the Po1s0n1vy APT group?
 
-Ans: lillian.rose@po1s0n1vy.com
+### Ans: lillian.rose@po1s0n1vy.com
 
 A google search of “Po1s0n1vy APT” would yield a result pointing to the following website: https://www.whoxy.com.
 
@@ -176,9 +177,9 @@ Right-click on the domain icon and this opens the Run Transform box. Here, choos
 [![](https://github.com/prakharvr02/Splunk-Cyberdefender-Project/blob/main/BOTSv3%20Splunk%20lab%20Images/17.webp)]
 
 
-Q9 What IP address is likely attempting a brute force password attack against imreallynotbatman.com?
+## Q9 What IP address is likely attempting a brute force password attack against imreallynotbatman.com?
 
-Ans: 23.22.63.114
+### Ans: 23.22.63.114
 
 The command below filters out HTTP events with the IP address of “imreallynotbatman.com” as “dest_ip” and with an HTTP request method of “POST”. The “stats” command is then employed to count the events based on “src_ip”, “form_data”, and “uri”, which helps identify the source of the attack.
 
@@ -212,9 +213,9 @@ index=botsv1 sourcetype=stream:http dest_ip=192.168.250.70 http_method=POST src_
 | table form_data
 ```
 
-Q10 What is the name of the executable uploaded by Po1s0n1vy? Please include the file extension. (For example, “notepad.exe” or “favicon.ico”)
+## Q10 What is the name of the executable uploaded by Po1s0n1vy? Please include the file extension. (For example, “notepad.exe” or “favicon.ico”)
 
-Ans: 3791.exe
+### Ans: 3791.exe
 
 File uploads to web forms use the HTTP “POST”method along with the “multipart/form-data” content type.
 
@@ -227,9 +228,9 @@ Given those, we’ll gonna filter events related to “imreallynotbatman.com” 
 [![](https://github.com/prakharvr02/Splunk-Cyberdefender-Project/blob/main/BOTSv3%20Splunk%20lab%20Images/20.webp)]
 
 
-Q11 What is the MD5 hash of the executable uploaded?
+## Q11 What is the MD5 hash of the executable uploaded?
 
-Ans: AAE3F5A29935E6ABCC2C2754D12A9AF0
+### Ans: AAE3F5A29935E6ABCC2C2754D12A9AF0
 
 Change the source type to “sysmon” with the name of the executable as our keyword search.
 
@@ -253,9 +254,9 @@ With that, we narrowed down to the executable file’s MD5 hash.
 [![](https://github.com/prakharvr02/Splunk-Cyberdefender-Project/blob/main/BOTSv3%20Splunk%20lab%20Images/23.webp)]
 
 
-Q12 GCPD reported that common TTP (Tactics, Techniques, Procedures) for the Po1s0n1vy APT group, if initial compromise fails, is to send a spear-phishing email with custom malware attached to their intended target. This malware is usually connected to Po1s0n1vy’s initial attack infrastructure. Using research techniques, provide the SHA256 hash of this malware.
+## Q12 GCPD reported that common TTP (Tactics, Techniques, Procedures) for the Po1s0n1vy APT group, if initial compromise fails, is to send a spear-phishing email with custom malware attached to their intended target. This malware is usually connected to Po1s0n1vy’s initial attack infrastructure. Using research techniques, provide the SHA256 hash of this malware.
 
-Ans: 9709473ab351387aab9e816eff3910b9f28a7a70202e250ed46dba8f820f34a8
+### Ans: 9709473ab351387aab9e816eff3910b9f28a7a70202e250ed46dba8f820f34a8
 
 In Q7, we used VirusTotal to identify the domains related to “23.22.63.114”.
 
@@ -269,18 +270,18 @@ Let’s click on “MirandaTateScreensaver.scr.exe” and view the details.
 [![](https://github.com/prakharvr02/Splunk-Cyberdefender-Project/blob/main/BOTSv3%20Splunk%20lab%20Images/25.webp)]
 
 
-Q13 What is the special hex code associated with the customized malware discussed in question 12? (Hint: It’s not in Splunk)
+## Q13 What is the special hex code associated with the customized malware discussed in question 12? (Hint: It’s not in Splunk)
 
-Ans: 53 74 65 76 65 20 42 72 61 6e 74 27 73 20 42 65 61 72 64 20 69 73 20 61 20 70 6f 77 65 72 66 75 6c 20 74 68 69 6e 67 2e 20 46 69 6e 64 20 74 68 69 73 20 6d 65 73 73 61 67 65 20 61 6e 64 20 61 73 6b 20 68 69 6d 20 74 6f 20 62 75 79 20 79 6f 75 20 61 20 62 65 65 72 21 21 21
+### Ans: `53 74 65 76 65 20 42 72 61 6e 74 27 73 20 42 65 61 72 64 20 69 73 20 61 20 70 6f 77 65 72 66 75 6c 20 74 68 69 6e 67 2e 20 46 69 6e 64 20 74 68 69 73 20 6d 65 73 73 61 67 65 20 61 6e 64 20 61 73 6b 20 68 69 6d 20 74 6f 20 62 75 79 20 79 6f 75 20 61 20 62 65 65 72 21 21 21`
 
 Still on VirusTotal, go to the Community Tab and we see a hex code associated with the malware.
 
 [![](https://github.com/prakharvr02/Splunk-Cyberdefender-Project/blob/main/BOTSv3%20Splunk%20lab%20Images/26.webp)]
 
 
-Q14 One of Po1s0n1vy’s staged domains has some disjointed “unique” whois information. Concatenate the two codes together and submit them as a single answer.
+## Q14 One of Po1s0n1vy’s staged domains has some disjointed “unique” whois information. Concatenate the two codes together and submit them as a single answer.
 
-Ans: 31 73 74 32 66 69 6E 64 67 65 74 73 66 72 65 65 62 65 65 72 66 72 6F 6D 72 79 61 6E 66 69 6E 64 68 69 6D 74 6F 67 65 74
+### Ans: `31 73 74 32 66 69 6E 64 67 65 74 73 66 72 65 65 62 65 65 72 66 72 6F 6D 72 79 61 6E 66 69 6E 64 68 69 6D 74 6F 67 65 74`
 
 We also identified other related domains to “23.22.63.114”
 
@@ -301,9 +302,9 @@ After searching with the other related domains, we identified that “waynecorin
 
 
 
-Q15 What was the first brute force password used?
+## Q15 What was the first brute force password used?
 
-Ans: 12345678
+### Ans: 12345678
 
 In continuation to Q9, we identified the “uri” being attacked, that is “/joomla/administrator/index.php”.
 
@@ -333,15 +334,15 @@ I just want to highlight that the key used might change depending on how the “
 
 (?<password>: The (?<password> is a named capture group. It assigns the matched substring to a field called "password" in Splunk. In this case, the field "password" will capture the value following the "passwd=" string.
 \\w+: This part of the pattern matches one or more word characters. Word characters include alphanumeric characters (a-z, A-Z, 0-9) and underscores. It captures the value of the password, assuming it consists of one or more word characters.
-Q16 One of the passwords in the brute force attack is James Brodsky’s favorite Coldplay song. Hint: we are looking for a six-character word on this one. Which is it?
+## Q16 One of the passwords in the brute force attack is James Brodsky’s favorite Coldplay song. Hint: we are looking for a six-character word on this one. Which is it?
 
-Ans: yellow
+### Ans: yellow
 
 Firstly, we need to search for “Coldplay” songs that are six-character.
 
 Here are some of their six-character songs.
 
-Yellow
+```Yellow
 Violet
 Trouble
 Sparks
@@ -350,15 +351,19 @@ Clocks
 Square
 Always
 Ghosts
+```
+
 We will try to match any of the passwords captured with the songs identified.
 
 The first part of the command should be easily understood.
 
 For the reg ex “rex”:
 
+```
 (?i) makes the pattern case-insensitive.
 (?<password>[a-zA-Z]{6}) captures the password as a six-letter word using the [a-zA-Z]{6} pattern, which matches any six consecutive alphabetical characters (both uppercase and lowercase).
 After capturing the password, the “search” command is used to filter only the passwords that match any of the Coldplay songs listed. The “IN” operator is used to check if the “password” field is present in the specified list of song titles.
+```
 
 Lastly, the “table” command is mentioned, which will display the “src_ip” and the password that matched the filter.
 
@@ -372,9 +377,9 @@ index=botsv1 sourcetype=stream:http dest_ip="192.168.250.70" http_method=POST ur
 
 [![](https://github.com/prakharvr02/Splunk-Cyberdefender-Project/blob/main/BOTSv3%20Splunk%20lab%20Images/32.webp)]
 
-Q17 What was the correct password for admin access to the content management system running “imreallynotbatman.com”?
+## Q17 What was the correct password for admin access to the content management system running “imreallynotbatman.com”?
 
-Ans: batman
+### Ans: batman
 
 We will build our command based of our query on Q15, where we identified the passwords used in the attack.
 
@@ -426,9 +431,9 @@ From the number of successful authentication, it is safe to say that “batman�
 [![](https://github.com/prakharvr02/Splunk-Cyberdefender-Project/blob/main/BOTSv3%20Splunk%20lab%20Images/35.webp)]
 
 
-Q18 What was the average password length used in the password brute-forcing attempt? (Round to a closest whole integer. For example “5” not “5.23213”)
+## Q18 What was the average password length used in the password brute-forcing attempt? (Round to a closest whole integer. For example “5” not “5.23213”)
 
-Ans: 6
+### Ans: 6
 
 We will again use the command in Q15 to identify the passwords used in the attack, and build on that.
 
@@ -450,9 +455,9 @@ The result displays the “avglength” and the “rounded” values.
 [![](https://github.com/prakharvr02/Splunk-Cyberdefender-Project/blob/main/BOTSv3%20Splunk%20lab%20Images/36.webp)]
 
 
-Q19 How many seconds elapsed between the brute force password scan identified the correct password and the compromised login? Round to 2 decimal places.
+## Q19 How many seconds elapsed between the brute force password scan identified the correct password and the compromised login? Round to 2 decimal places.
 
-Ans: 92.17
+### Ans: 92.17
 
 This is asking us the time that has passed between the discovery of the correct password and the first successful authentication.
 
@@ -498,9 +503,9 @@ index=botsv1 sourcetype=stream:http  http_method=POST uri_path="/joomla/administ
 
 [![](https://github.com/prakharvr02/Splunk-Cyberdefender-Project/blob/main/BOTSv3%20Splunk%20lab%20Images/39.webp)]
 
-Q20 How many unique passwords were attempted in the brute force attempt?
+## Q20 How many unique passwords were attempted in the brute force attempt?
 
-Ans: 412
+### Ans: 412
 
 We will recycle the command we used in Q15 when we identified the paswords used in the brute force attack.
 
@@ -518,9 +523,9 @@ index=botsv1 sourcetype=stream:http src_ip=23.22.63.114 dest_ip="192.168.250.70"
 
 The succeeding questions cover section 2 of the lab.
 
-Q21 What was the most likely IP address of we8105desk in 24AUG2016?
+## Q21 What was the most likely IP address of we8105desk in 24AUG2016?
 
-Ans: 192.168.250.100
+### Ans: 192.168.250.100
 
 We will answer this based on the number of events related to workstation “we8105desk”. The events are counted in relation to the source IPs and then sorted in reverse, which is just telling splunk to display the order of events from highest to lowest in count.
 
@@ -532,9 +537,9 @@ index=botsv1 host=we8105desk
 
 [![](https://github.com/prakharvr02/Splunk-Cyberdefender-Project/blob/main/BOTSv3%20Splunk%20lab%20Images/41.webp)]
 
-Q22 Amongst the Suricata signatures that detected the Cerber malware, which one alerted the fewest number of times? Submit ONLY the signature ID value as the answer. (No punctuation, just 7 integers.)
+## Q22 Amongst the Suricata signatures that detected the Cerber malware, which one alerted the fewest number of times? Submit ONLY the signature ID value as the answer. (No punctuation, just 7 integers.)
 
-Ans: 2816763
+### Ans: 2816763
 
 Search for the keyword “cerber”, with “suricata” as our source type. Examine the “alert.signature_id” field to identify the signature ID with the least alert counts related to “cerber”.
 
@@ -542,9 +547,9 @@ Search for the keyword “cerber”, with “suricata” as our source type. Exa
 
 [![](https://github.com/prakharvr02/Splunk-Cyberdefender-Project/blob/main/BOTSv3%20Splunk%20lab%20Images/42.webp)]
 
-Q23 What fully qualified domain name (FQDN) makes the Cerber ransomware attempt to direct the user to at the end of its encryption phase?
+## Q23 What fully qualified domain name (FQDN) makes the Cerber ransomware attempt to direct the user to at the end of its encryption phase?
 
-Ans: cerberhhyed5frqa.xmfir0.win
+### Ans: cerberhhyed5frqa.xmfir0.win
 
 Let’s craft a simple filter in “stream:dns” with the victim’s IP as source IP.
 
@@ -568,17 +573,17 @@ The malicious domain is observed in the “query” field.
 [![](https://github.com/prakharvr02/Splunk-Cyberdefender-Project/blob/main/BOTSv3%20Splunk%20lab%20Images/44.webp)]
 
 
-Q24 What was the first suspicious domain visited by we8105desk in 24AUG2016?
+## Q24 What was the first suspicious domain visited by we8105desk in 24AUG2016?
 
-Ans: solidaritedeproximite.org
+### Ans: solidaritedeproximite.org
 
 In the previous question, the domain was identified. Scrolling down the “query” results, another suspicious domain is observed.
 
 [![](https://github.com/prakharvr02/Splunk-Cyberdefender-Project/blob/main/BOTSv3%20Splunk%20lab%20Images/44.webp)]
 
-Q25 During the initial Cerber infection a VB script is run. The entire script from this execution, pre-pended by the name of the launching .exe, can be found in a field in Splunk. What is the length in characters of the value of this field?
+## Q25 During the initial Cerber infection a VB script is run. The entire script from this execution, pre-pended by the name of the launching .exe, can be found in a field in Splunk. What is the length in characters of the value of this field?
 
-Ans: 4490
+### Ans: 4490
 
 To count the length of characters, the command “eval” will be used. Specifically, the “len” function of “eval” will be called to return the character length.
 
@@ -605,9 +610,9 @@ index=botsv1 sourcetype="xmlwineventlog:microsoft-windows-sysmon/operational" vb
 
 [![](https://github.com/prakharvr02/Splunk-Cyberdefender-Project/blob/main/BOTSv3%20Splunk%20lab%20Images/47.webp)]
 
-Q26 What is the name of the USB key inserted by Bob Smith?
+## Q26 What is the name of the USB key inserted by Bob Smith?
 
-Ans: MIRANDA_PRI
+### Ans: MIRANDA_PRI
 
 USB devices and related information are logged in Windows Registry. So when a USB is connected to a Windows device, certain details are recorded too. The USB device information can be found in the “SYSTEM\CurrentControlSet\Enum\USBSTOR” Registry key.
 
@@ -634,9 +639,9 @@ https://lantern.splunk.com/Splunk_Platform/Use_Cases/Use_Cases_Security/Forensic
 
 [![](https://github.com/prakharvr02/Splunk-Cyberdefender-Project/blob/main/BOTSv3%20Splunk%20lab%20Images/49.webp)]
 
-Q27 Bob Smith’s workstation (we8105desk) was connected to a file server during the ransomware outbreak. What is the IP address of the file server?
+## Q27 Bob Smith’s workstation (we8105desk) was connected to a file server during the ransomware outbreak. What is the IP address of the file server?
 
-Ans: 192.168.250.20
+### Ans: 192.168.250.20
 
 Common protocols used are “ftp”, “smb” or “http”. The “sourcetype” field can provide an overview of the possible file servers used by the victim.
 
@@ -662,9 +667,9 @@ index="botsv1" src_ip=192.168.250.100 sourcetype="stream:smb"
 
 [![](https://github.com/prakharvr02/Splunk-Cyberdefender-Project/blob/main/BOTSv3%20Splunk%20lab%20Images/52.webp)]
 
-Q28 How many distinct PDFs did the ransomware encrypt on the remote file server?
+## Q28 How many distinct PDFs did the ransomware encrypt on the remote file server?
 
-Ans: 257
+### Ans: 257
 
 Let’s first identify what is the host name of the file server. We know that its IP address is “192.168.250.20”
 
@@ -676,7 +681,7 @@ It is not splunk or “suricata”. Definitely not Bob Smith’s work station. I
 
 So let’s modify the query to filter out events from host “we9041srv” that contains any files with a “pdf” file extension.
 
-index=botsv1 host=we9041srv *.pdf
+`index=botsv1 host=we9041srv *.pdf`
 It is noted that Windows Event logged the “pdf” files.
 
 [![](https://github.com/prakharvr02/Splunk-Cyberdefender-Project/blob/main/BOTSv3%20Splunk%20lab%20Images/54.webp)]
@@ -694,11 +699,11 @@ The “dc” function of “stats” is used to count the distinct value in the 
 
 [![](https://github.com/prakharvr02/Splunk-Cyberdefender-Project/blob/main/BOTSv3%20Splunk%20lab%20Images/56.webp)]
 
-Q29 The VBScript found in question 25 launches 121214.tmp. What is the ParentProcessId of this initial launch?
+## Q29 The VBScript found in question 25 launches 121214.tmp. What is the ParentProcessId of this initial launch?
 
-Ans: 3968
+### Ans: 3968
 
-Q25 gave us the “vbs” scripts that were executed.
+## Q25 gave us the “vbs” scripts that were executed.
 
 ```
 index=botsv1 sourcetype="xmlwineventlog:microsoft-windows-sysmon/operational" vbs 
@@ -720,9 +725,9 @@ The field “ParentCommandLine” would just answer that.
 [![](https://github.com/prakharvr02/Splunk-Cyberdefender-Project/blob/main/BOTSv3%20Splunk%20lab%20Images/59.webp)]
 
 
-Q30 The Cerber ransomware encrypts files located in Bob Smith’s Windows profile. How many .txt files does it encrypt?
+## Q30 The Cerber ransomware encrypts files located in Bob Smith’s Windows profile. How many .txt files does it encrypt?
 
-Ans: 406
+### Ans: 406
 
 Let’s recap what is Bob Smith’s host name.
 
@@ -743,9 +748,9 @@ index=botsv1 bob.smith sourcetype="XmlWinEventLog:Microsoft-Windows-Sysmon/Opera
 
 [![](https://github.com/prakharvr02/Splunk-Cyberdefender-Project/blob/main/BOTSv3%20Splunk%20lab%20Images/61.webp)]
 
-Q31 The malware downloads a file that contains the Cerber ransomware crypto code. What is the name of that file?
+## Q31 The malware downloads a file that contains the Cerber ransomware crypto code. What is the name of that file?
 
-Ans: mhtr.jpg
+### Ans: mhtr.jpg
 
 let’s switch to suricata as it analyzes network packets and traffic flows to detect and alert on suspicious or malicious activities.
 
@@ -768,9 +773,9 @@ Grab the file’s hash, using a simple command, and use VirusTotal to know more 
 [![](https://github.com/prakharvr02/Splunk-Cyberdefender-Project/blob/main/BOTSv3%20Splunk%20lab%20Images/64.webp)]
 
 
-Q32 Now that you know the name of the ransomware’s encryptor file, what obfuscation technique does it likely use?
+## Q32 Now that you know the name of the ransomware’s encryptor file, what obfuscation technique does it likely use?
 
-Ans: steganography
+### Ans: steganography
 
 “The practice of concealing messages or information within other non-secret text or data.”
 
